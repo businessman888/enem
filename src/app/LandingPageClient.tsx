@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCircle, BookOpen, PenTool, Brain, Star, Clock, Users, Trophy, ArrowRight, Zap, Shield, Gift, Download } from 'lucide-react'
+import { CircleCheck as CheckCircle, BookOpen, PenTool, Brain, Star, Clock, Users, Trophy, ArrowRight, Zap, Shield, Gift, Download } from 'lucide-react'
 
 export default function LandingPageClient() {
   return (
