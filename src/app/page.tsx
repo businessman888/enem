@@ -1,5 +1,5 @@
-import LandingPageClient from './LandingPageClient'
+import QuizClient from './QuizClient'
 
 export default function Page() {
-  return <LandingPageClient />
+  return <QuizClient />
 }
