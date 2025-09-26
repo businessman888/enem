@@ -2,7 +2,7 @@
 
 import { CheckCircle, BookOpen, PenTool, Brain, Star, Clock, Users, Trophy, ArrowRight, Zap, Shield, Gift, Download } from 'lucide-react'
 
-export default function LandingPage() {
+export default function LandingPageClient() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
