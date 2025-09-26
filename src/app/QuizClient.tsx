@@ -1,369 +1,341 @@
 "use client"
 
 import { useState } from 'react'
-import { CheckCircle, Brain, Clock, ArrowRight, RotateCcw, Star } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface Question {
   id: number
-  question: string
-  options: string[]
-  correct: number
-  explanation: string
-  subject: string
+  title: string
+  options: Array<{
+    value: string
+    text: string
+    description: string
+  }>
+}
+
+interface Profile {
+  name: string
+  description: string
 }
 
 const questions: Question[] = [
   {
     id: 1,
-    question: "Qual das alternativas apresenta a sequência correta dos processos de formação das chuvas?",
+    title: "Como você se sente em relação ao ENEM?",
     options: [
-      "Evaporação → Condensação → Precipitação",
-      "Condensação → Evaporação → Precipitação", 
-      "Precipitação → Evaporação → Condensação",
-      "Evaporação → Precipitação → Condensação",
-      "Condensação → Precipitação → Evaporação"
-    ],
-    correct: 0,
-    explanation: "O ciclo da água segue a sequência: evaporação (água vira vapor), condensação (vapor vira gotículas) e precipitação (chuva).",
-    subject: "Geografia"
+      {
+        value: "ansioso",
+        text: "😰 Ansioso e sobrecarregado",
+        description: "Sinto que há muito para estudar e pouco tempo"
+      },
+      {
+        value: "confiante",
+        text: "😎 Confiante, mas preciso de foco",
+        description: "Sei que posso ir bem, mas quero otimizar meus estudos"
+      },
+      {
+        value: "perdido",
+        text: "😕 Perdido e sem direção",
+        description: "Não sei por onde começar nem como organizar"
+      }
+    ]
   },
   {
     id: 2,
-    question: "Em relação ao movimento literário do Realismo no Brasil, é correto afirmar que:",
+    title: "Qual sua maior dificuldade no ENEM?",
     options: [
-      "Privilegiava a idealização da realidade e o subjetivismo",
-      "Caracterizava-se pela objetividade e crítica social",
-      "Valorizava principalmente os aspectos místicos e religiosos",
-      "Enfatizava o nacionalismo romântico exagerado",
-      "Focava exclusivamente em temas urbanos contemporâneos"
-    ],
-    correct: 1,
-    explanation: "O Realismo brasileiro caracterizou-se pela objetividade na descrição da realidade e forte crítica aos problemas sociais da época.",
-    subject: "Literatura"
+      {
+        value: "redacao",
+        text: "✍️ Redação",
+        description: "Tenho dificuldade para estruturar e argumentar"
+      },
+      {
+        value: "exatas",
+        text: "🧮 Matemática e Ciências Exatas",
+        description: "Fórmulas e cálculos são meu ponto fraco"
+      },
+      {
+        value: "humanas",
+        text: "📚 Ciências Humanas",
+        description: "História, Geografia e Sociologia me confundem"
+      },
+      {
+        value: "linguagens",
+        text: "📖 Linguagens e Códigos",
+        description: "Interpretação de texto e literatura são desafios"
+      }
+    ]
   },
   {
     id: 3,
-    question: "A função f(x) = 2x + 3 é uma função:",
+    title: "Em qual área você se sente mais confortável?",
     options: [
-      "Quadrática crescente",
-      "Linear decrescente", 
-      "Linear crescente",
-      "Exponencial",
-      "Logarítmica"
-    ],
-    correct: 2,
-    explanation: "f(x) = 2x + 3 é uma função linear (1º grau) crescente, pois o coeficiente angular (2) é positivo.",
-    subject: "Matemática"
+      {
+        value: "humanas",
+        text: "📚 Humanas (História, Geografia, Filosofia)",
+        description: "Gosto de ler, interpretar e contextualizar"
+      },
+      {
+        value: "exatas",
+        text: "🧮 Exatas (Matemática, Física, Química)",
+        description: "Me dou bem com números, fórmulas e lógica"
+      },
+      {
+        value: "equilibrado",
+        text: "⚖️ Equilibrado em ambas",
+        description: "Consigo me virar tanto em humanas quanto exatas"
+      }
+    ]
   },
   {
     id: 4,
-    question: "Qual processo celular é responsável pela produção de ATP nas células eucarióticas?",
+    title: "Quanto tempo você tem para estudar por dia?",
     options: [
-      "Fotossíntese apenas",
-      "Respiração celular apenas",
-      "Fermentação apenas", 
-      "Respiração celular e fermentação",
-      "Digestão celular"
-    ],
-    correct: 3,
-    explanation: "Tanto a respiração celular quanto a fermentação produzem ATP, sendo a respiração mais eficiente.",
-    subject: "Biologia"
+      {
+        value: "pouco",
+        text: "⏰ 1-3 horas",
+        description: "Trabalho/estudo em período integral"
+      },
+      {
+        value: "medio",
+        text: "📚 4-6 horas",
+        description: "Consigo me dedicar uma boa parte do dia"
+      },
+      {
+        value: "muito",
+        text: "🎯 Mais de 6 horas",
+        description: "Estou focado 100% nos estudos"
+      }
+    ]
   },
   {
     id: 5,
-    question: "A Lei da Inércia, primeira lei de Newton, estabelece que:",
+    title: "Qual seu maior desafio com organização?",
     options: [
-      "Todo corpo em movimento tende a parar",
-      "A força é igual ao produto da massa pela aceleração",
-      "Todo corpo em repouso ou movimento retilíneo uniforme permanece nesse estado até que uma força atue sobre ele",
-      "Para toda ação existe uma reação igual e contrária",
-      "A velocidade é diretamente proporcional à força aplicada"
-    ],
-    correct: 2,
-    explanation: "A Lei da Inércia afirma que um corpo mantém seu estado de repouso ou movimento retilíneo uniforme até que uma força externa atue sobre ele.",
-    subject: "Física"
+      {
+        value: "procrastinacao",
+        text: "😴 Procrastinação",
+        description: "Sempre deixo para depois"
+      },
+      {
+        value: "planejamento",
+        text: "📋 Falta de planejamento",
+        description: "Não sei como organizar meu cronograma"
+      },
+      {
+        value: "foco",
+        text: "🎯 Falta de foco",
+        description: "Me distraio facilmente durante os estudos"
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "Qual sua meta de pontuação no ENEM?",
+    options: [
+      {
+        value: "boa",
+        text: "🎯 700-799 pontos",
+        description: "Busco uma boa universidade pública"
+      },
+      {
+        value: "excelente",
+        text: "⭐ 800-899 pontos",
+        description: "Quero cursos concorridos e renomados"
+      },
+      {
+        value: "elite",
+        text: "🏆 900+ pontos",
+        description: "Mira em Medicina, Direito e cursos de elite"
+      }
+    ]
   }
 ]
 
+const profiles: Record<string, Profile> = {
+  'generalista_ansioso': {
+    name: '🧠 O Generalista Ansioso',
+    description: 'Você tem conhecimento amplo mas se sente sobrecarregado. Precisa de foco e organização para canalizar seu potencial.'
+  },
+  'especialista_lacunas': {
+    name: '⚡ O Especialista com Lacunas', 
+    description: 'Você domina algumas áreas mas tem pontos fracos específicos. Seu plano será focado em cobrir essas lacunas estratégicas.'
+  },
+  'procrastinador_redacao': {
+    name: '✍️ O Procrastinador de Redação',
+    description: 'Você evita a redação por insegurança. Vamos transformar isso com técnicas específicas e muito treino personalizado.'
+  },
+  'guerreiro_tempo': {
+    name: '⏰ O Guerreiro do Tempo',
+    description: 'Você tem pouco tempo mas muita determinação. Seu plano será ultra-otimizado para máximo resultado em mínimo tempo.'
+  },
+  'perfeccionista_perdido': {
+    name: '🎯 O Perfeccionista Perdido',
+    description: 'Você quer excelência mas não sabe por onde começar. Vamos criar uma estratégia clara para suas altas metas.'
+  }
+}
+
 export default function QuizClient() {
   const router = useRouter()
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([])
+  const [currentQuestion, setCurrentQuestion] = useState(1)
+  const [answers, setAnswers] = useState<Record<number, string>>({})
   const [showResult, setShowResult] = useState(false)
-  const [quizStarted, setQuizStarted] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(300) // 5 minutos
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null)
 
-  // Timer effect
-  useState(() => {
-    if (quizStarted && !showResult && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
-    } else if (timeLeft === 0) {
-      handleFinishQuiz()
-    }
-  })
+  const totalQuestions = questions.length
+  const progress = ((currentQuestion - 1) / totalQuestions) * 100
 
-  const handleAnswerSelect = (answerIndex: number) => {
-    const newAnswers = [...selectedAnswers]
-    newAnswers[currentQuestion] = answerIndex
-    setSelectedAnswers(newAnswers)
+  const selectOption = (value: string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion]: value
+    }))
   }
 
-  const handleNextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1)
+  const nextQuestion = () => {
+    if (!answers[currentQuestion]) return
+
+    if (currentQuestion < totalQuestions) {
+      setCurrentQuestion(prev => prev + 1)
     } else {
-      handleFinishQuiz()
+      showResultHandler()
     }
   }
 
-  const handleFinishQuiz = () => {
+  const calculateProfile = (): string => {
+    const sentiment = answers[1]
+    const difficulty = answers[2]
+    const area = answers[3]
+    const time = answers[4]
+    const organization = answers[5]
+    const goal = answers[6]
+    
+    if (sentiment === 'ansioso' && area !== 'equilibrado') {
+      return 'generalista_ansioso'
+    } else if (difficulty === 'redacao' || organization === 'procrastinacao') {
+      return 'procrastinador_redacao'
+    } else if (time === 'pouco') {
+      return 'guerreiro_tempo'
+    } else if (goal === 'elite') {
+      return 'perfeccionista_perdido'
+    } else {
+      return 'especialista_lacunas'
+    }
+  }
+
+  const showResultHandler = () => {
+    const profileKey = calculateProfile()
+    const profile = profiles[profileKey]
+    setSelectedProfile(profile)
     setShowResult(true)
   }
 
-  const calculateScore = () => {
-    let correct = 0
-    questions.forEach((question, index) => {
-      if (selectedAnswers[index] === question.correct) {
-        correct++
-      }
-    })
-    return correct
+  const redirectToLanding = () => {
+    router.push('/landing')
   }
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
-
-  const score = calculateScore()
-  const percentage = Math.round((score / questions.length) * 100)
-
-  // Tela inicial do quiz
-  if (!quizStarted) {
+  if (showResult && selectedProfile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-xl text-center">
-          <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Brain className="w-10 h-10 text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-700 flex items-center justify-center p-5">
+        <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-10 shadow-2xl max-w-2xl w-full relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-600"></div>
+          
+          <div className="w-full h-2 bg-gray-200 rounded-full mb-8">
+            <div className="h-full bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-full w-full transition-all duration-300"></div>
           </div>
-          
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Quiz ENEM IA Pro
-          </h1>
-          
-          <p className="text-lg text-gray-600 mb-8">
-            Teste seus conhecimentos com 5 questões no estilo ENEM. 
-            Descubra como nossa IA pode te ajudar a alcançar seus objetivos!
-          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-sm">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <Clock className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-              <div className="font-semibold text-gray-900">5 minutos</div>
-              <div className="text-gray-600">Tempo limite</div>
-            </div>
-            <div className="bg-green-50 p-4 rounded-lg">
-              <CheckCircle className="w-6 h-6 text-green-600 mx-auto mb-2" />
-              <div className="font-semibold text-gray-900">5 questões</div>
-              <div className="text-gray-600">Multidisciplinar</div>
-            </div>
-            <div className="bg-orange-50 p-4 rounded-lg">
-              <Star className="w-6 h-6 text-orange-600 mx-auto mb-2" />
-              <div className="font-semibold text-gray-900">Resultado</div>
-              <div className="text-gray-600">Instantâneo</div>
-            </div>
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-5 animate-bounce">🎉</div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4 leading-tight">
+              Parabéns! Seu perfil foi definido
+            </h1>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Seu perfil personalizado foi enviado para o ENEM IA Pro e está sendo processado por nossa inteligência artificial.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-700 text-white p-8 rounded-2xl my-8 text-left">
+            <h2 className="text-2xl font-bold mb-3">{selectedProfile.name}</h2>
+            <p className="text-base opacity-90 leading-relaxed">{selectedProfile.description}</p>
           </div>
 
           <button 
-            onClick={() => setQuizStarted(true)}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center mx-auto"
+            onClick={redirectToLanding}
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-5 px-10 rounded-2xl text-lg font-bold cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl"
           >
-            Iniciar Quiz
-            <ArrowRight className="w-5 h-5 ml-2" />
+            ✨ Continuar
           </button>
         </div>
       </div>
     )
   }
 
-  // Tela de resultado
-  if (showResult) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-xl">
-          <div className="text-center mb-8">
-            <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 ${
-              percentage >= 70 ? 'bg-green-100' : percentage >= 50 ? 'bg-yellow-100' : 'bg-red-100'
-            }`}>
-              <div className={`text-3xl font-bold ${
-                percentage >= 70 ? 'text-green-600' : percentage >= 50 ? 'text-yellow-600' : 'text-red-600'
-              }`}>
-                {percentage}%
-              </div>
-            </div>
-            
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {percentage >= 70 ? 'Excelente!' : percentage >= 50 ? 'Bom trabalho!' : 'Continue estudando!'}
-            </h2>
-            
-            <p className="text-lg text-gray-600 mb-8">
-              Você acertou <strong>{score} de {questions.length}</strong> questões
-            </p>
-          </div>
-
-          {/* Revisão das questões */}
-          <div className="space-y-4 mb-8 max-h-64 overflow-y-auto">
-            {questions.map((question, index) => {
-              const isCorrect = selectedAnswers[index] === question.correct
-              const wasAnswered = selectedAnswers[index] !== undefined
-              
-              return (
-                <div key={question.id} className={`p-4 rounded-lg border-2 ${
-                  isCorrect ? 'border-green-200 bg-green-50' : 
-                  wasAnswered ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'
-                }`}>
-                  <div className="flex items-start space-x-3">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                      isCorrect ? 'bg-green-500' : wasAnswered ? 'bg-red-500' : 'bg-gray-500'
-                    }`}>
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900 mb-2">{question.subject}</div>
-                      <div className="text-sm text-gray-600 mb-2">{question.question}</div>
-                      <div className="text-xs text-gray-500">
-                        Resposta correta: {question.options[question.correct]}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="text-center">
-            <div className="bg-blue-50 p-6 rounded-xl mb-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                🎯 Quer melhorar ainda mais seus resultados?
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Descubra como nossa IA especializada pode te ajudar a alcançar a nota dos seus sonhos no ENEM 2025!
-              </p>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={() => {
-                  setCurrentQuestion(0)
-                  setSelectedAnswers([])
-                  setShowResult(false)
-                  setQuizStarted(false)
-                  setTimeLeft(300)
-                }}
-                className="bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-600 transition-all duration-300 flex items-center justify-center"
-              >
-                <RotateCcw className="w-5 h-5 mr-2" />
-                Refazer Quiz
-              </button>
-              
-              <button 
-                onClick={() => router.push('/landing')}
-                className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center justify-center"
-              >
-                Conhecer ENEM IA Pro
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Tela da questão atual
-  const question = questions[currentQuestion]
-  const progress = ((currentQuestion + 1) / questions.length) * 100
+  const currentQuestionData = questions[currentQuestion - 1]
+  const hasAnswer = answers[currentQuestion]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header com timer e progresso */}
-      <div className="bg-white shadow-sm p-4">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <div className="text-lg font-bold text-gray-900">
-              Questão {currentQuestion + 1} de {questions.length}
-            </div>
-            <div className="text-sm text-gray-600 bg-blue-100 px-3 py-1 rounded-full">
-              {question.subject}
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <div className={`flex items-center space-x-2 ${timeLeft < 60 ? 'text-red-600' : 'text-gray-600'}`}>
-              <Clock className="w-5 h-5" />
-              <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-700 flex items-center justify-center p-5">
+      <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-10 shadow-2xl max-w-2xl w-full relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-600"></div>
         
-        {/* Barra de progresso */}
-        <div className="max-w-4xl mx-auto mt-4">
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+        <div className="w-full h-2 bg-gray-200 rounded-full mb-8 overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
-      </div>
 
-      {/* Questão */}
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-8 leading-relaxed">
-            {question.question}
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center mb-2.5">
+            <img 
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzQyNjFGRiIvPgo8cGF0aCBkPSJNMTIgMTcuNUMxNS4wMzc2IDE3LjUgMTcuNSAxNS4wMzc2IDE3LjUgMTJDMTcuNSA4Ljk2MjQ0IDE1LjAzNzYgNi41IDEyIDYuNUM4Ljk2MjQ0IDYuNSA2LjUgOC45NjI0NCA2LjUgMTJDNi41IDE1LjAzNzYgOC45NjI0NCAxNy41IDEyIDE3LjVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMiA5QzEyIDkgMTMgMTAgMTUgMTJDMTMgMTQgMTIgMTUgMTIgMTUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" 
+              alt="ENEM IA Pro" 
+              className="w-8 h-8 mr-3 align-middle"
+            />
+            <span className="text-3xl font-extrabold text-gray-800">ENEM IA Pro</span>
+          </div>
+          <p className="text-gray-600 text-base font-medium">Descubra seu perfil de estudante em 1 minuto</p>
+        </div>
+
+        <div className="mb-8">
+          <div className="text-indigo-600 font-semibold text-sm mb-2">
+            PERGUNTA {currentQuestion}/{totalQuestions}
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-5 leading-tight">
+            {currentQuestionData.title}
           </h2>
           
-          <div className="space-y-4">
-            {question.options.map((option, index) => (
+          <div className="flex flex-col gap-3">
+            {currentQuestionData.options.map((option, index) => (
               <button
                 key={index}
-                onClick={() => handleAnswerSelect(index)}
-                className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md ${
-                  selectedAnswers[currentQuestion] === index
-                    ? 'border-blue-500 bg-blue-50 text-blue-900'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                onClick={() => selectOption(option.value)}
+                className={`bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-200 relative overflow-hidden text-left hover:border-indigo-500 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-indigo-500/15 ${
+                  answers[currentQuestion] === option.value
+                    ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-purple-600 text-white -translate-y-0.5 shadow-2xl shadow-indigo-500/30'
+                    : ''
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold ${
-                    selectedAnswers[currentQuestion] === index
-                      ? 'border-blue-500 bg-blue-500 text-white'
-                      : 'border-gray-300 text-gray-400'
-                  }`}>
-                    {String.fromCharCode(65 + index)}
-                  </div>
-                  <span className="flex-1">{option}</span>
+                <div className="font-semibold text-base mb-1">{option.text}</div>
+                <div className={`text-sm ${answers[currentQuestion] === option.value ? 'opacity-80' : 'opacity-80'}`}>
+                  {option.description}
                 </div>
               </button>
             ))}
           </div>
-          
-          {selectedAnswers[currentQuestion] !== undefined && (
-            <div className="mt-8 text-center">
-              <button
-                onClick={handleNextQuestion}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center mx-auto"
-              >
-                {currentQuestion === questions.length - 1 ? 'Finalizar Quiz' : 'Próxima Questão'}
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-            </div>
-          )}
         </div>
+
+        <button 
+          onClick={nextQuestion}
+          disabled={!hasAnswer}
+          className={`w-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white py-4.5 px-9 rounded-2xl text-base font-bold cursor-pointer transition-all duration-300 mt-8 ${
+            hasAnswer 
+              ? 'opacity-100 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-indigo-500/40' 
+              : 'opacity-50 cursor-not-allowed'
+          }`}
+        >
+          {currentQuestion === totalQuestions ? 'Ver Meu Perfil' : 'Próxima Pergunta'}
+        </button>
       </div>
     </div>
   )

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubra Seu Perfil de Estudante - ENEM AI Guru</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #00d4ff, #5b86e5, #36d1dc);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #5b86e5);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            color: #5b86e5;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .question-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            border-color: #5b86e5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(91, 134, 229, 0.15);
+        }
+
+        .option.selected {
+            border-color: #5b86e5;
+            background: linear-gradient(135deg, #5b86e5, #36d1dc);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(91, 134, 229, 0.3);
+        }
+
+        .option-text {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .option-description {
+            font-size: 14px;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #5b86e5, #36d1dc);
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            pointer-events: none;
+            margin-top: 30px;
+        }
+
+        .next-button.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .next-button:hover.active {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(91, 134, 229, 0.4);
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .celebration-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        .result-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .result-subtitle {
+            color: #64748b;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .profile-description {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .redirect-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .redirect-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 30px 20px;
+            }
+
+            .question-title {
+                font-size: 20px;
+            }
+
+            .option {
+                padding: 16px;
+            }
+
+            .result-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="header">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzQyNjFGRiIvPgo8cGF0aCBkPSJNMTIgMTcuNUMxNS4wMzc2IDE3LjUgMTcuNSAxNS4wMzc2IDE3LjUgMTJDMTcuNSA4Ljk2MjQ0IDE1LjAzNzYgNi41IDEyIDYuNUM4Ljk2MjQ0IDYuNSA2LjUgOC45NjI0NCA2LjUgMTJDNi41IDE1LjAzNzYgOC45NjI0NCAxNy41IDEyIDE3LjVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMiA5QzEyIDkgMTMgMTAgMTUgMTJDMTMgMTQgMTIgMTUgMTIgMTUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="ENEM IA Pro" style="width: 32px; height: 32px; margin-right: 12px; vertical-align: middle;">
+                ENEM IA Pro
+            </div>
+            <div class="subtitle">Descubra seu perfil de estudante em 1 minuto</div>
+        </div>
+
+        <!-- Pergunta 1 -->
+        <div class="question active" data-question="1">
+            <div class="question-container">
+                <div class="question-number">PERGUNTA 1/6</div>
+                <div class="question-title">Como você se sente em relação ao ENEM?</div>
+                <div class="options">
+                    <div class="option" data-value="ansioso">
+                        <div class="option-text">😰 Ansioso e sobrecarregado</div>
+                        <div class="option-description">Sinto que há muito para estudar e pouco tempo</div>
+                    </div>
+                    <div class="option" data-value="confiante">
+                        <div class="option-text">😎 Confiante, mas preciso de foco</div>
+                        <div class="option-description">Sei que posso ir bem, mas quero otimizar meus estudos</div>
+                    </div>
+                    <div class="option" data-value="perdido">
+                        <div class="option-text">😕 Perdido e sem direção</div>
+                        <div class="option-description">Não sei por onde começar nem como organizar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 2 -->
+        <div class="question" data-question="2">
+            <div class="question-container">
+                <div class="question-number">PERGUNTA 2/6</div>
+                <div class="question-title">Qual sua maior dificuldade no ENEM?</div>
+                <div class="options">
+                    <div class="option" data-value="redacao">
+                        <div class="option-text">✍️ Redação</div>
+                        <div class="option-description">Tenho dificuldade para estruturar e argumentar</div>
+                    </div>
+                    <div class="option" data-value="exatas">
+                        <div class="option-text">🧮 Matemática e Ciências Exatas</div>
+                        <div class="option-description">Fórmulas e cálculos são meu ponto fraco</div>
+                    </div>
+                    <div class="option" data-value="humanas">
+                        <div class="option-text">📚 Ciências Humanas</div>
+                        <div class="option-description">História, Geografia e Sociologia me confundem</div>
+                    </div>
+                    <div class="option" data-value="linguagens">
+                        <div class="option-text">📖 Linguagens e Códigos</div>
+                        <div class="option-description">Interpretação de texto e literatura são desafios</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 3 -->
+        <div class="question" data-question="3">
+            <div class="question-container">
+                <div class="question-number">PERGUNTA 3/6</div>
+                <div class="question-title">Em qual área você se sente mais confortável?</div>
+                <div class="options">
+                    <div class="option" data-value="humanas">
+                        <div class="option-text">📚 Humanas (História, Geografia, Filosofia)</div>
+                        <div class="option-description">Gosto de ler, interpretar e contextualizar</div>
+                    </div>
+                    <div class="option" data-value="exatas">
+                        <div class="option-text">🧮 Exatas (Matemática, Física, Química)</div>
+                        <div class="option-description">Me dou bem com números, fórmulas e lógica</div>
+                    </div>
+                    <div class="option" data-value="equilibrado">
+                        <div class="option-text">⚖️ Equilibrado em ambas</div>
+                        <div class="option-description">Consigo me virar tanto em humanas quanto exatas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 4 -->
+        <div class="question" data-question="4">
+            <div class="question-container">
+                <div class="question-number">PERGUNTA 4/6</div>
+                <div class="question-title">Quanto tempo você tem para estudar por dia?</div>
+                <div class="options">
+                    <div class="option" data-value="pouco">
+                        <div class="option-text">⏰ 1-3 horas</div>
+                        <div class="option-description">Trabalho/estudo em período integral</div>
+                    </div>
+                    <div class="option" data-value="medio">
+                        <div class="option-text">📚 4-6 horas</div>
+                        <div class="option-description">Consigo me dedicar uma boa parte do dia</div>
+                    </div>
+                    <div class="option" data-value="muito">
+                        <div class="option-text">🎯 Mais de 6 horas</div>
+                        <div class="option-description">Estou focado 100% nos estudos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 5 -->
+        <div class="question" data-question="5">
+            <div class="question-container">
+                <div class="question-number">PERGUNTA 5/6</div>
+                <div class="question-title">Qual seu maior desafio com organização?</div>
+                <div class="options">
+                    <div class="option" data-value="procrastinacao">
+                        <div class="option-text">😴 Procrastinação</div>
+                        <div class="option-description">Sempre deixo para depois</div>
+                    </div>
+                    <div class="option" data-value="planejamento">
+                        <div class="option-text">📋 Falta de planejamento</div>
+                        <div class="option-description">Não sei como organizar meu cronograma</div>
+                    </div>
+                    <div class="option" data-value="foco">
+                        <div class="option-text">🎯 Falta de foco</div>
+                        <div class="option-description">Me distraio facilmente durante os estudos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 6 -->
+        <div class="question" data-question="6">
+            <div class="question-container">
+                <div class="question-number">PERGUNTA 6/6</div>
+                <div class="question-title">Qual sua meta de pontuação no ENEM?</div>
+                <div class="options">
+                    <div class="option" data-value="boa">
+                        <div class="option-text">🎯 700-799 pontos</div>
+                        <div class="option-description">Busco uma boa universidade pública</div>
+                    </div>
+                    <div class="option" data-value="excelente">
+                        <div class="option-text">⭐ 800-899 pontos</div>
+                        <div class="option-description">Quero cursos concorridos e renomados</div>
+                    </div>
+                    <div class="option" data-value="elite">
+                        <div class="option-text">🏆 900+ pontos</div>
+                        <div class="option-description">Mira em Medicina, Direito e cursos de elite</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado -->
+        <div class="result-container" id="resultContainer">
+            <div class="celebration-icon">🎉</div>
+            <div class="result-title">Parabéns! Seu perfil foi definido</div>
+            <div class="result-subtitle">Seu perfil personalizado foi enviado para o ENEM IA Pro e está sendo processado por nossa inteligência artificial.</div>
+            
+            <div class="profile-card" id="profileCard">
+                <div class="profile-name" id="profileName"></div>
+                <div class="profile-description" id="profileDescription"></div>
+            </div>
+
+            <button class="redirect-button" onclick="redirectToLanding()">
+                ✨ Continuar
+            </button>
+        </div>
+
+        <button class="next-button" id="nextButton" onclick="nextQuestion()">
+            Próxima Pergunta
+        </button>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 6;
+        const answers = {};
+        
+        // Perfis possíveis
+        const profiles = {
+            'generalista_ansioso': {
+                name: '🧠 O Generalista Ansioso',
+                description: 'Você tem conhecimento amplo mas se sente sobrecarregado. Precisa de foco e organização para canalizar seu potencial.'
+            },
+            'especialista_lacunas': {
+                name: '⚡ O Especialista com Lacunas', 
+                description: 'Você domina algumas áreas mas tem pontos fracos específicos. Seu plano será focado em cobrir essas lacunas estratégicas.'
+            },
+            'procrastinador_redacao': {
+                name: '✍️ O Procrastinador de Redação',
+                description: 'Você evita a redação por insegurança. Vamos transformar isso com técnicas específicas e muito treino personalizado.'
+            },
+            'guerreiro_tempo': {
+                name: '⏰ O Guerreiro do Tempo',
+                description: 'Você tem pouco tempo mas muita determinação. Seu plano será ultra-otimizado para máximo resultado em mínimo tempo.'
+            },
+            'perfeccionista_perdido': {
+                name: '🎯 O Perfeccionista Perdido',
+                description: 'Você quer excelência mas não sabe por onde começar. Vamos criar uma estratégia clara para suas altas metas.'
+            }
+        };
+
+        function updateProgress() {
+            const progress = (currentQuestion - 1) / totalQuestions * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectOption(element, value) {
+            // Remove seleção anterior
+            const options = element.parentNode.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Adiciona seleção atual
+            element.classList.add('selected');
+            
+            // Salva resposta
+            answers[currentQuestion] = value;
+            
+            // Ativa botão
+            const nextBtn = document.getElementById('nextButton');
+            nextBtn.classList.add('active');
+            
+            if (currentQuestion === totalQuestions) {
+                nextBtn.textContent = 'Ver Meu Perfil';
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers[currentQuestion]) return;
+            
+            if (currentQuestion < totalQuestions) {
+                // Próxima pergunta
+                document.querySelector(`.question[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`.question[data-question="${currentQuestion}"]`).classList.add('active');
+                
+                // Reset botão
+                const nextBtn = document.getElementById('nextButton');
+                nextBtn.classList.remove('active');
+                
+                updateProgress();
+            } else {
+                // Mostrar resultado
+                showResult();
+            }
+        }
+
+        function calculateProfile() {
+            // Lógica aprimorada para determinar perfil
+            const sentiment = answers[1];
+            const difficulty = answers[2];
+            const area = answers[3]; // Nova pergunta sobre área de conforto
+            const time = answers[4];
+            const organization = answers[5];
+            const goal = answers[6];
+            
+            if (sentiment === 'ansioso' && area !== 'equilibrado') {
+                return 'generalista_ansioso';
+            } else if (difficulty === 'redacao' || organization === 'procrastinacao') {
+                return 'procrastinador_redacao';
+            } else if (time === 'pouco') {
+                return 'guerreiro_tempo';
+            } else if (goal === 'elite') {
+                return 'perfeccionista_perdido';
+            } else {
+                return 'especialista_lacunas';
+            }
+        }
+
+        function showResult() {
+            // Esconder quiz
+            document.querySelector(`.question[data-question="${currentQuestion}"]`).classList.remove('active');
+            document.getElementById('nextButton').style.display = 'none';
+            
+            // Calcular e mostrar perfil
+            const profileKey = calculateProfile();
+            const profile = profiles[profileKey];
+            
+            document.getElementById('profileName').textContent = profile.name;
+            document.getElementById('profileDescription').textContent = profile.description;
+            
+            // Mostrar resultado
+            document.getElementById('resultContainer').classList.add('active');
+            
+            // Atualizar progress para 100%
+            document.getElementById('progressFill').style.width = '100%';
+        }
+
+        function redirectToLanding() {
+            window.location.href = '/';
+        }
+
+        // Event listeners para as opções
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.option')) {
+                const option = e.target.closest('.option');
+                const value = option.dataset.value;
+                selectOption(option, value);
+            }
+        });
+
+        // Inicializar
+        updateProgress();
+    </script>
+</body>
+</html>
