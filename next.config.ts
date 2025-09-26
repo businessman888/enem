@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
       allowedOrigins: ["*"]
     }
   },
+  // Allow cross-origin requests for Replit proxy
+  allowedDevOrigins: [
+    "*.replit.dev",
+    "*.repl.co", 
+    "localhost",
+    "127.0.0.1",
+    "*"
+  ],
   // Additional settings for Replit compatibility
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   trailingSlash: false,
