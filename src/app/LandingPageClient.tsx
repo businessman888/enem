@@ -43,11 +43,11 @@ export default function LandingPageClient() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center">
+            <a href="https://pay.kirvano.com/75ae3352-6cba-4a2a-a1fe-394206f3fff5" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center">
               <Download className="w-5 h-5 mr-2" />
               Acesso Imediato - Começar Agora
               <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
+            </a>
             <div className="flex items-center text-gray-600">
               <Star className="w-5 h-5 text-yellow-500 mr-1" />
               <span className="font-medium">4.9/5 - Mais de 3.000 aprovados</span>
@@ -523,10 +523,10 @@ export default function LandingPageClient() {
             <div className="text-orange-100 mb-6">
               Oferta especial por tempo limitado - Últimas 48 horas
             </div>
-            <button className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-bold hover:shadow-2xl transition-all duration-300 hover:scale-105 w-full sm:w-auto mb-4">
+            <a href="https://pay.kirvano.com/75ae3352-6cba-4a2a-a1fe-394206f3fff5" target="_blank" rel="noopener noreferrer" className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-bold hover:shadow-2xl transition-all duration-300 hover:scale-105 w-full sm:w-auto mb-4 inline-block text-center">
               <Download className="w-5 h-5 inline-block mr-2" />
               Garantir Acesso Imediato Agora
-            </button>
+            </a>
             <div className="text-orange-100 text-sm">
               ⚡ Acesso liberado na hora
             </div>
