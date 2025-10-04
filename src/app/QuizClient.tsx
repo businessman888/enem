@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -287,9 +288,11 @@ export default function QuizClient() {
 
         <div className="text-center mb-10">
           <div className="flex items-center justify-center mb-2.5">
-            <img 
+            <Image 
               src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzQyNjFGRiIvPgo8cGF0aCBkPSJNMTIgMTcuNUMxNS4wMzc2IDE3LjUgMTcuNSAxNS4wMzc2IDE3LjUgMTJDMTcuNSA4Ljk2MjQ0IDE1LjAzNzYgNi41IDEyIDYuNUM4Ljk2MjQ0IDYuNSA2LjUgOC45NjI0NCA2LjUgMTJDNi41IDE1LjAzNzYgOC45NjI0NCAxNy41IDEyIDE3LjVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMiA5QzEyIDkgMTMgMTAgMTUgMTJDMTMgMTQgMTIgMTUgMTIgMTUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" 
               alt="ENEM IA Pro" 
+              width={32}
+              height={32}
               className="w-8 h-8 mr-3 align-middle"
             />
             <span className="text-3xl font-extrabold text-gray-800">ENEM IA Pro</span>

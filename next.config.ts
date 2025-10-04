@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
   },
 };
 

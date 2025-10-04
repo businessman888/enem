@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import { CircleCheck as CheckCircle, BookOpen, PenTool, Brain, Star, Clock, Users, Trophy, ArrowRight, Zap, Shield, Gift, Download } from 'lucide-react'
 
 export default function LandingPageClient() {
@@ -362,9 +363,11 @@ export default function LandingPageClient() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face" 
                   alt="Maria Silva" 
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover mr-4"
                 />
                 <div>
@@ -378,7 +381,7 @@ export default function LandingPageClient() {
                 </div>
               </div>
               <p className="text-gray-700 italic mb-4">
-                "Eu estava desesperada com a redação... Minha nota era sempre baixa. Com o Guru de Redação, consegui 980 pontos! O tema que caiu era quase idêntico ao que pratiquei. Chorei de emoção quando vi o resultado. Hoje estou no 3º período de Medicina na USP realizando meu sonho!"
+                &quot;Eu estava desesperada com a redação... Minha nota era sempre baixa. Com o Guru de Redação, consegui 980 pontos! O tema que caiu era quase idêntico ao que pratiquei. Chorei de emoção quando vi o resultado. Hoje estou no 3º período de Medicina na USP realizando meu sonho!&quot;
               </p>
               <div className="text-green-600 font-semibold">
                 ✅ Nota da redação: 980/1000
@@ -387,9 +390,11 @@ export default function LandingPageClient() {
 
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" 
                   alt="João Santos" 
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover mr-4"
                 />
                 <div>
@@ -403,7 +408,7 @@ export default function LandingPageClient() {
                 </div>
               </div>
               <p className="text-gray-700 italic mb-4">
-                "Trabalhava durante o dia e só tinha a noite para estudar. Os resumos inteligentes foram minha salvação! Consegui revisar 3 anos de conteúdo em 2 meses. As questões preditivas eram muito similares à prova real. Passei em 1º lugar no meu curso!"
+                &quot;Trabalhava durante o dia e só tinha a noite para estudar. Os resumos inteligentes foram minha salvação! Consegui revisar 3 anos de conteúdo em 2 meses. As questões preditivas eram muito similares à prova real. Passei em 1º lugar no meu curso!&quot;
               </p>
               <div className="text-green-600 font-semibold">
                 ✅ Classificação: 1º lugar geral
@@ -412,9 +417,11 @@ export default function LandingPageClient() {
 
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" 
                   alt="Ana Costa" 
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover mr-4"
                 />
                 <div>
@@ -428,7 +435,7 @@ export default function LandingPageClient() {
                 </div>
               </div>
               <p className="text-gray-700 italic mb-4">
-                "Vinha de escola pública e me sentia insegura para competir. O ENEM IA Pro me deu confiança! As questões eram tão parecidas que me senti em casa na prova. Quando saiu o resultado, não acreditei: 850 pontos! Minha família chorou comigo. Gratidão eterna!"
+                &quot;Vinha de escola pública e me sentia insegura para competir. O ENEM IA Pro me deu confiança! As questões eram tão parecidas que me senti em casa na prova. Quando saiu o resultado, não acreditei: 850 pontos! Minha família chorou comigo. Gratidão eterna!&quot;
               </p>
               <div className="text-green-600 font-semibold">
                 ✅ Nota geral: 920 pontos
@@ -440,9 +447,11 @@ export default function LandingPageClient() {
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
               <div className="flex items-center mb-3">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face" 
                   alt="Pedro Lima" 
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover mr-3"
                 />
                 <div>
@@ -451,15 +460,17 @@ export default function LandingPageClient() {
                 </div>
               </div>
               <p className="text-gray-700 text-sm italic">
-                "Era minha terceira tentativa. Com o ENEM IA Pro finalmente consegui! A diferença foi absurda."
+                &quot;Era minha terceira tentativa. Com o ENEM IA Pro finalmente consegui! A diferença foi absurda.&quot;
               </p>
             </div>
 
             <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500">
               <div className="flex items-center mb-3">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=50&h=50&fit=crop&crop=face" 
                   alt="Carla Mendes" 
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover mr-3"
                 />
                 <div>
@@ -468,7 +479,7 @@ export default function LandingPageClient() {
                 </div>
               </div>
               <p className="text-gray-700 text-sm italic">
-                "Mãe solteira, trabalhava e estudava. Sem tempo para cursinho. Esse sistema mudou minha vida!"
+                &quot;Mãe solteira, trabalhava e estudava. Sem tempo para cursinho. Esse sistema mudou minha vida!&quot;
               </p>
             </div>
           </div>
